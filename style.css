@@ -6,18 +6,26 @@
   --glow: #ff00bf;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
-  font-size: 20px;
+  font-size: clamp(18px, 1.4vw, 22px);
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 6rem;
 }
 
 body {
   margin: 0;
+  width: 100%;
   background-color: var(--bg);
   color: var(--pink);
   font-family: system-ui, sans-serif;
   line-height: 1.6;
+  overflow-wrap: break-word;
 }
 
 .site-header {
@@ -26,18 +34,31 @@ body {
   z-index: 10;
   display: flex;
   justify-content: flex-end;
-  padding: 0.75rem 2rem;
+  padding: 0.5rem clamp(0.5rem, 3vw, 2rem);
   background-color: rgba(5, 5, 8, 0.85);
   backdrop-filter: blur(6px);
 }
 
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  width: min(100%, 60rem);
+  min-width: 0;
+}
+
 nav a {
-  display: inline-block;
-  font-size: 1.3rem;
-  margin: 0.25rem;
-  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0.5rem clamp(0.8rem, 2vw, 1.15rem);
   background-color: var(--surface);
   color: var(--pink);
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  line-height: 1.25;
+  text-align: center;
   text-decoration: none;
   border: 2px solid var(--pink);
   border-radius: 0.5rem;
@@ -46,12 +67,13 @@ nav a {
     box-shadow 0.2s ease,
     text-shadow 0.2s ease,
     transform 0.2s ease;
+  touch-action: manipulation;
 }
 
 nav a:hover,
 nav a:focus-visible {
   color: #fff;
-  transform: scale(1.1);
+  transform: translateY(-2px);
   box-shadow:
     0 0 8px #fff,
     0 0 18px #ff04d5,
@@ -64,30 +86,32 @@ nav a:focus-visible {
 main {
   max-width: 60rem;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 clamp(1rem, 4vw, 1.5rem);
 }
 
 section {
-  padding: 4rem 0;
+  padding: clamp(2.5rem, 8vw, 4rem) 0;
 }
 
 #about p {
-  font-size: 1.25rem;
+  font-size: clamp(1.15rem, 2.5vw, 1.35rem);
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: clamp(1.8rem, 5vw, 2.3rem);
   margin-bottom: 1rem;
   text-shadow: 0 0 12px var(--glow);
 }
 
 .hero {
-  min-height: 70vh;
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding-inline: 0;
 }
 
 #title_portfolio {
@@ -96,12 +120,14 @@ h2 {
   letter-spacing: 0.08em;
   margin: 0;
   animation: title-float 3s ease-in-out infinite;
+  overflow-wrap: anywhere;
 }
 
 .tagline {
-  font-size: 2rem;
-  letter-spacing: 0.2em;
+  font-size: clamp(1.25rem, 4vw, 2.2rem);
+  letter-spacing: clamp(0.06em, 1.5vw, 0.2em);
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
 @keyframes title-float {
@@ -116,12 +142,13 @@ h2 {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: clamp(1rem, 3vw, 1.5rem);
 }
 
 .card {
-  padding: 1.5rem;
+  min-width: 0;
+  padding: clamp(1rem, 4vw, 1.5rem);
   background-color: var(--surface);
   border: 2px solid var(--pink);
   border-radius: 0.75rem;
@@ -148,7 +175,7 @@ h2 {
 }
 
 .skills li {
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.15rem;
   border: 2px solid var(--pink);
   border-radius: 999px;
   background-color: var(--surface);
@@ -164,16 +191,46 @@ main a:not(nav a):hover {
 }
 
 footer {
-  padding: 3rem 0;
+  padding: clamp(2rem, 6vw, 3rem) 1rem;
   text-align: center;
   opacity: 0.9;
+}
+
+@media (max-width: 480px) {
+  html {
+    scroll-padding-top: 8rem;
+  }
+
+  nav {
+    gap: 0.35rem;
+  }
+
+  nav a {
+    flex: 1 1 calc(50% - 0.35rem);
+    padding-inline: 0.65rem;
+  }
+}
+
+@media (max-width: 360px) {
+  #title_portfolio {
+    font-size: clamp(2rem, 11vw, 2.5rem);
+    letter-spacing: 0.04em;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  #title_portfolio {
+
+  #title_portfolio,
+  nav a {
     animation: none;
+    transition: none;
+  }
+
+  nav a:hover,
+  nav a:focus-visible {
+    transform: none;
   }
 }
